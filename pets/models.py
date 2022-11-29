@@ -17,5 +17,9 @@ class Pet(models.Model):
     group = models.ForeignKey(
         "groups.Group",
         on_delete=models.CASCADE,
-        related_name="group",
+        related_name="pets",
+    )
+    traits = models.ManyToManyField(
+        "traits.Trait",
+        related_name="pets",
     )
