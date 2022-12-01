@@ -4,7 +4,6 @@ from groups.serializers import GroupSerializer
 from .models import Pet, PetSex
 from groups.models import Group
 from traits.models import Trait
-import ipdb
 
 
 class PetSerializer(serializers.Serializer):

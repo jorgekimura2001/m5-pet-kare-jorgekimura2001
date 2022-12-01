@@ -1,7 +1,6 @@
 from rest_framework.views import APIView, Request, Response, status
 from .models import Pet
 from .serializers import PetSerializer
-import ipdb
 from django.shortcuts import get_object_or_404
 
 
@@ -11,7 +10,6 @@ class PetView(APIView):
 
         serializer = PetSerializer(pets, many=True)
 
-        # ipdb.set_trace()
         return Response(serializer.data)
 
     def post(self, request: Request) -> Response:
