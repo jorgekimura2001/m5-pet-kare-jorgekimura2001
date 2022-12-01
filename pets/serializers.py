@@ -38,14 +38,13 @@ class PetSerializer(serializers.Serializer):
             if key == 'group':
                 group, _ = Group.objects.get_or_create(**value)
                 instance.group = group
-                ipdb.set_trace()
-            if key == 'traits':
+            elif key == 'traits':
                 for trait in value:
                     trait_request, _ = Trait.objects.get_or_create(**trait)
-                    # ipdb.set_trace()
                     trait_updated.append(trait_request)
-                instance.traits.add(trait_updated)
-            setattr(instance, key, value)
+                instance.traits.set(trait_updated)
+            else:
+                setattr(instance, key, value)
 
         instance.save()
         return instance
