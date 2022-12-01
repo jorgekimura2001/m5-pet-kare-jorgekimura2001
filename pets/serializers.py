@@ -18,6 +18,7 @@ class PetSerializer(serializers.Serializer):
     )
     group = GroupSerializer()
     traits = TraitSerializer(many=True)
+    traits_count = serializers.SerializerMethodField()
 
     def create(self, validated_data):
         request_group = validated_data.pop('group')
@@ -30,3 +31,24 @@ class PetSerializer(serializers.Serializer):
             pet.traits.add(trait_request)
 
         return pet
+
+    def update(self, instance, validated_data):
+        trait_updated = []
+        for key, value in validated_data.items():
+            if key == 'group':
+                group, _ = Group.objects.get_or_create(**value)
+                instance.group = group
+                ipdb.set_trace()
+            if key == 'traits':
+                for trait in value:
+                    trait_request, _ = Trait.objects.get_or_create(**trait)
+                    # ipdb.set_trace()
+                    trait_updated.append(trait_request)
+                instance.traits.add(trait_updated)
+            setattr(instance, key, value)
+
+        instance.save()
+        return instance
+
+    def get_traits_count(self, obj):
+        return len(obj.traits.all())
